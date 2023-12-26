@@ -1,0 +1,53 @@
+---
+- name: Install Docker and Docker Compose on Raspberry Pi
+  hosts: raspi
+  become: true
+
+  tasks:
+    - name: Update apt package index
+      apt:
+        update_cache: yes
+
+    - name: Install Docker Compose
+      apt:
+        name: docker-compose
+        state: latest
+
+    - name: Ensure Docker service is running
+      service:
+        name: docker
+        state: started
+        enabled: yes
+
+    - name: Create and start services
+      community.docker.docker_compose:
+        project_name: homeassistant
+        definition:
+          version: '3'
+          services:
+            homeassistant:
+              container_name: homeassistant
+              image: "ghcr.io/home-assistant/home-assistant:stable"
+              volumes:
+                - /home/acr/homeassistant:/config
+                - /etc/localtime:/etc/localtime:ro
+                - /run/dbus:/run/dbus:ro
+              restart: unless-stopped
+              privileged: true
+              network_mode: host
+            mosquitto:
+              image: eclipse-mosquitto:latest
+              container_name: mosquitto
+              network_mode: host
+              ports:
+                - "1883:1883"
+                - "9001:9001"
+              volumes:
+                - /home/acr/mosquitto/data:/mosquitto/data
+                - /home/acr/mosquitto/log:/mosquitto/log
+              restart: unless-stopped
+      register: output
+
+    - name: Show results
+      ansible.builtin.debug:
+        var: output
