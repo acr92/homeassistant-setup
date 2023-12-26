@@ -1,6 +1,5 @@
 import minimalmodbus
 import datetime
-from time import sleep
 
 REGISTER_INDEX = 0
 FUNCTIONCODE_INDEX = 1

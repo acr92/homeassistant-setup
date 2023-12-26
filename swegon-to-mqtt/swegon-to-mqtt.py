@@ -1,10 +1,6 @@
 #!/usr/bin/python3
 
-import os
-import sys
-import datetime
 import paho.mqtt.client as mqtt
-import random
 import queue
 import json
 import hassautoconf as autoconf
@@ -130,9 +126,8 @@ def update_sensors(swegoncasa):
 
 
 def register_sensors():
-    # autoconf.register_sensor(client, BASE_TOPIC_ALARMS, "Alarms", "alarm", expire_after=EXPIRE_AFTER)
-    autoconf.register_sensor(client, BASE_TOPIC_SENSORS, "Fresh Air Temperature", "fan", expire_after=EXPIRE_AFTER)
-    autoconf.register_sensor(client, BASE_TOPIC_SENSORS, "Supply air before re-heater temperature", "fan",
+    autoconf.register_sensor(client, BASE_TOPIC_SENSORS, "Fresh Air Temperature", "temperature", expire_after=EXPIRE_AFTER)
+    autoconf.register_sensor(client, BASE_TOPIC_SENSORS, "Supply air before re-heater temperature", "temperature",
                              expire_after=EXPIRE_AFTER)
     autoconf.register_sensor(client, BASE_TOPIC_SENSORS, "Supply air temperature", "temperature",
                              expire_after=EXPIRE_AFTER)

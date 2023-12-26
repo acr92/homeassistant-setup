@@ -46,6 +46,13 @@
                 - /home/acr/mosquitto/data:/mosquitto/data
                 - /home/acr/mosquitto/log:/mosquitto/log
               restart: unless-stopped
+            swegonmqtt:
+              image: docker.io/acr92/swegon-to-mqtt:latest
+              container_name: swegonmqtt
+              restart: unless-stopped
+              network_mode: host
+              devices:
+                - "/dev/ttyS0:/dev/ttyS0"
       register: output
 
     - name: Show results
